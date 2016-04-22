@@ -3,6 +3,8 @@ import path from 'path';
 
 class IsomorphicGetter {
 	constructor() {
+		const self = this;
+
 		this.fileRead = (style_path, depth) => {
 			depth = _fixDepth(depth);
 
@@ -22,7 +24,17 @@ class IsomorphicGetter {
 			}
 
 			return (() => { return parent.require(style_path); })();
-		}
+		};
+
+		this.getFile = (style_path, depth) => {
+			isBrowser = (typeof window !== 'undefined' && window.document && window.document.createElement);
+
+			if (isBrowser) {
+				return self.fileRequire(style_path, depth);
+			}
+
+			return self.fileRead(style_path, depth);
+		};
 
 		function _fixDepth (depth) {
 			return (!depth || isNaN(depth))? 1 : ( (depth > stack.length - 2)? stack.length - 2 : depth );
