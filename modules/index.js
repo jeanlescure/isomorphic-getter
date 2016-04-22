@@ -4,13 +4,29 @@ import path from 'path';
 class IsomorphicGetter {
 	constructor() {
 		this.fileRead = (style_path, depth) => {
-			depth = (!depth || isNaN(depth))? 1 : ( (depth > stack.length - 2)? stack.length - 2 : depth );
-			
+			depth = _fixDepth(depth);
+
 			const local_root = path.dirname(_getCallerFile(depth));
 			const local_style_path = style_path.replace(/^\.\//, '/');
 
 			return fs.readFileSync(local_root + local_style_path, 'utf8').toString();
 		};
+
+		this.fileRequire = (style_path, depth) => {
+			depth = _fixDepth(depth);
+
+			let parent = module.parent;
+
+			for (let i = depth; i > 1; i--) {
+				parent = parent.parent;
+			}
+
+			return (() => { return parent.require(style_path); })();
+		}
+
+		function _fixDepth (depth) {
+			return (!depth || isNaN(depth))? 1 : ( (depth > stack.length - 2)? stack.length - 2 : depth );
+		}
 
 		function _getCallerFile(depth) {
 	    var pst, stack, file, frame;
