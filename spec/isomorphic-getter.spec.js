@@ -1,4 +1,4 @@
-import isoGetter from '../lib';
+import isoGetter, { isBrowser } from '../lib';
 
 describe('IsomorphicGetter', () => {
 	it('loads files locally when server-side', () => {
@@ -15,5 +15,9 @@ describe('IsomorphicGetter', () => {
 		// being the isoGetter's `parent`.
 		expect(() => {isoGetter.fileRequire('./fixtures/dummy.styles.css')})
 			.toThrowError(/^(?=.*\b\/spec\/fixtures\/dummy\.styles\.css\b)(?=.*\btoken \(1\:0\)).*$/g);
+	});
+
+	it('can test for browser', () => {
+		expect(isBrowser).toBe(false);
 	});
 });

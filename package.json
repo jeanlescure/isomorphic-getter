@@ -1,6 +1,6 @@
 {
   "name": "isomorphic-getter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Isomorphic replacement for `require()`, for Webpack and React environments",
   "main": "lib/index",
   "scripts": {

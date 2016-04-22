@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
+const isBrowser = (typeof window !== 'undefined' && window.document && window.document.createElement);
+
 class IsomorphicGetter {
 	constructor() {
 		const self = this;
@@ -27,8 +29,6 @@ class IsomorphicGetter {
 		};
 
 		this.getFile = (style_path, depth) => {
-			isBrowser = (typeof window !== 'undefined' && window.document && window.document.createElement);
-
 			if (isBrowser) {
 				return self.fileRequire(style_path, depth);
 			}
@@ -63,3 +63,4 @@ class IsomorphicGetter {
 }
 
 export default new IsomorphicGetter();
+export { isBrowser };
