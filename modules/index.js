@@ -36,12 +36,17 @@ class IsomorphicGetter {
 			return self.fileRead(style_path, depth);
 		};
 
-		function _fixDepth (depth) {
+		function _fixDepth(depth) {
+			let stack = _getStack();
 			return (!depth || isNaN(depth))? 1 : ( (depth > stack.length - 2)? stack.length - 2 : depth );
 		}
 
+		function _getStack() {
+			return (new Error()).stack;
+		}
+
 		function _getCallerFile(depth) {
-	    var pst, stack, file, frame;
+	    let pst, stack, file, frame;
 
 	    pst = Error.prepareStackTrace;
 	    Error.prepareStackTrace = function (_, stack) {
@@ -49,7 +54,7 @@ class IsomorphicGetter {
 	        return stack;
 	    };
 
-	    stack = (new Error()).stack;
+	    stack = _getStack();
 	    stack = stack.slice(depth + 1);
 
 	    do {
